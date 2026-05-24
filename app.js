@@ -1195,7 +1195,7 @@ async function loadData() {
     saveSelectedClasses(); rerender();
   };
   el.clearAllBtn.onclick = () => {
-    [...el.classPicker.querySelectorAll('.classChip')].forEach((b, i) => { const on = i === 0; b.classList.toggle('classChip--on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    el.classPicker.querySelectorAll('.classChip').forEach((b) => { b.classList.remove('classChip--on'); b.setAttribute('aria-pressed', 'false'); });
     saveSelectedClasses(); rerender();
   };
   el.selectAllTeachersBtn.onclick = () => {
@@ -1203,7 +1203,7 @@ async function loadData() {
     saveSelectedTeachers(); rerender();
   };
   el.clearAllTeachersBtn.onclick = () => {
-    [...el.teacherPicker.querySelectorAll('.classChip')].forEach((b, i) => { const on = i === 0; b.classList.toggle('classChip--on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    el.teacherPicker.querySelectorAll('.classChip').forEach((b) => { b.classList.remove('classChip--on'); b.setAttribute('aria-pressed', 'false'); });
     saveSelectedTeachers(); rerender();
   };
 
