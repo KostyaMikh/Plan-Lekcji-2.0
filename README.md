@@ -18,7 +18,7 @@ Dane pobierane z publicznego EduPage: [autonomiczne.edupage.org](https://autonom
 ## Uruchomienie lokalnie (Mac / PC)
 
 ```bash
-git clone https://github.com/TWOJ_LOGIN/Plan-Lekcji-2.0.git
+git clone https://github.com/KostyaMikh/Plan-Lekcji-2.0.git
 cd Plan-Lekcji-2.0
 python3 server.py
 ```
