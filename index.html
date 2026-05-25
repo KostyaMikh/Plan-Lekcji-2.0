@@ -1,495 +1,468 @@
 <!doctype html>
 <html lang="pl">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <meta name="theme-color" content="#060713" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="apple-touch-icon" href="./favicon.svg" />
-    <link rel="manifest" href="./manifest.json" />
-    <title>Plan Lekcji 2.0 — GSA</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="bg-grid" aria-hidden="true"></div>
 
-    <header class="topbar">
-      <div class="topbar__row">
-        <div class="brand">
-          <svg class="brand__mark" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="bm-bg1" cx="30%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#1a1d3a"/>
-                <stop offset="100%" stop-color="#060713"/>
-              </radialGradient>
-              <radialGradient id="bm-glow1" cx="30%" cy="30%" r="60%">
-                <stop offset="0%" stop-color="#66f0ff" stop-opacity="0.25"/>
-                <stop offset="100%" stop-color="#66f0ff" stop-opacity="0"/>
-              </radialGradient>
-              <radialGradient id="bm-glow2" cx="70%" cy="70%" r="60%">
-                <stop offset="0%" stop-color="#b26cff" stop-opacity="0.22"/>
-                <stop offset="100%" stop-color="#b26cff" stop-opacity="0"/>
-              </radialGradient>
-              <linearGradient id="bm-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#66f0ff"/>
-                <stop offset="100%" stop-color="#b26cff"/>
-              </linearGradient>
-              <linearGradient id="bm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#66f0ff"/>
-                <stop offset="100%" stop-color="#b26cff"/>
-              </linearGradient>
-              <filter id="bm-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-            <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-bg1)"/>
-            <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow1)"/>
-            <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow2)"/>
-            <g opacity="0.12">
-              <line x1="0" y1="16" x2="64" y2="16" stroke="#66f0ff" stroke-width="0.5"/>
-              <line x1="0" y1="32" x2="64" y2="32" stroke="#66f0ff" stroke-width="0.5"/>
-              <line x1="0" y1="48" x2="64" y2="48" stroke="#66f0ff" stroke-width="0.5"/>
-              <line x1="16" y1="0" x2="16" y2="64" stroke="#b26cff" stroke-width="0.5"/>
-              <line x1="32" y1="0" x2="32" y2="64" stroke="#b26cff" stroke-width="0.5"/>
-              <line x1="48" y1="0" x2="48" y2="64" stroke="#b26cff" stroke-width="0.5"/>
-            </g>
-            <rect x="10" y="13" width="44" height="38" rx="5" ry="5" fill="none" stroke="url(#bm-line)" stroke-width="2" filter="url(#bm-glow)"/>
-            <rect x="10" y="13" width="44" height="11" rx="5" ry="5" fill="url(#bm-grad)" opacity="0.18"/>
-            <rect x="10" y="19" width="44" height="5" fill="url(#bm-grad)" opacity="0.18"/>
-            <line x1="22" y1="10" x2="22" y2="17" stroke="#66f0ff" stroke-width="2.5" stroke-linecap="round" filter="url(#bm-glow)"/>
-            <line x1="42" y1="10" x2="42" y2="17" stroke="#b26cff" stroke-width="2.5" stroke-linecap="round" filter="url(#bm-glow)"/>
-            <rect x="14" y="28" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.75"/>
-            <rect x="27" y="28" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.6"/>
-            <rect x="40" y="28" width="10" height="6" rx="1.5" fill="#4dffb7" opacity="0.55"/>
-            <rect x="14" y="37" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.5"/>
-            <rect x="27" y="37" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.7"/>
-            <rect x="40" y="37" width="10" height="6" rx="1.5" fill="#ffcf5a" opacity="0.55"/>
-            <rect x="13" y="27" width="11" height="8" rx="2" fill="none" stroke="#66f0ff" stroke-width="1" opacity="0.9" filter="url(#bm-glow)"/>
-            <line x1="10" y1="24" x2="54" y2="24" stroke="url(#bm-line)" stroke-width="1" opacity="0.6"/>
-          </svg>
-          <div class="brand__text">
-            <div class="brand__title">Plan Lekcji 2.0</div>
-            <div id="dateTime" class="datetime" aria-live="polite"></div>
-          </div>
-        </div>
-        <div class="topbar__actions">
-          <div id="serverStatus" class="serverStatus serverStatus--checking" title="Status serwera">
-            <span class="serverStatus__dot"></span>
-            <span class="serverStatus__label">…</span>
-          </div>
-          <div class="langSwitcher" id="langSwitcher">
-            <button type="button" class="langBtn langBtn--active" data-lang="pl">PL</button>
-            <button type="button" class="langBtn" data-lang="ru">RU</button>
-            <button type="button" class="langBtn" data-lang="en">EN</button>
-          </div>
-          <button id="reloadBtn" class="btn btn--icon" type="button" aria-label="Odśwież">
-            <span class="btn__icon" aria-hidden="true">↻</span>
-          </button>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <title>Plan Lekcji 2.0 — GSA</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar__row">
+      <div class="brand">
+        <svg class="brand__mark" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bm-bg1" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#1a1d3a" />
+              <stop offset="100%" stop-color="#060713" />
+            </radialGradient>
+            <radialGradient id="bm-glow1" cx="30%" cy="30%" r="60%">
+              <stop offset="0%" stop-color="#66f0ff" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#66f0ff" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="bm-glow2" cx="70%" cy="70%" r="60%">
+              <stop offset="0%" stop-color="#b26cff" stop-opacity="0.22" />
+              <stop offset="100%" stop-color="#b26cff" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="bm-line" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#66f0ff" />
+              <stop offset="100%" stop-color="#b26cff" />
+            </linearGradient>
+            <linearGradient id="bm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#66f0ff" />
+              <stop offset="100%" stop-color="#b26cff" />
+            </linearGradient>
+            <filter id="bm-glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="1.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-bg1)" />
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow1)" />
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow2)" />
+          <g opacity="0.12">
+            <line x1="0" y1="16" x2="64" y2="16" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="0" y1="32" x2="64" y2="32" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="0" y1="48" x2="64" y2="48" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="16" y1="0" x2="16" y2="64" stroke="#b26cff" stroke-width="0.5" />
+            <line x1="32" y1="0" x2="32" y2="64" stroke="#b26cff" stroke-width="0.5" />
+            <line x1="48" y1="0" x2="48" y2="64" stroke="#b26cff" stroke-width="0.5" />
+          </g>
+          <rect x="10" y="13" width="44" height="38" rx="5" ry="5" fill="none" stroke="url(#bm-line)" stroke-width="2"
+            filter="url(#bm-glow)" />
+          <rect x="10" y="13" width="44" height="11" rx="5" ry="5" fill="url(#bm-grad)" opacity="0.18" />
+          <rect x="10" y="19" width="44" height="5" fill="url(#bm-grad)" opacity="0.18" />
+          <line x1="22" y1="10" x2="22" y2="17" stroke="#66f0ff" stroke-width="2.5" stroke-linecap="round"
+            filter="url(#bm-glow)" />
+          <line x1="42" y1="10" x2="42" y2="17" stroke="#b26cff" stroke-width="2.5" stroke-linecap="round"
+            filter="url(#bm-glow)" />
+          <rect x="14" y="28" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.75" />
+          <rect x="27" y="28" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.6" />
+          <rect x="40" y="28" width="10" height="6" rx="1.5" fill="#4dffb7" opacity="0.55" />
+          <rect x="14" y="37" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.5" />
+          <rect x="27" y="37" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.7" />
+          <rect x="40" y="37" width="10" height="6" rx="1.5" fill="#ffcf5a" opacity="0.55" />
+          <rect x="13" y="27" width="11" height="8" rx="2" fill="none" stroke="#66f0ff" stroke-width="1" opacity="0.9"
+            filter="url(#bm-glow)" />
+          <line x1="10" y1="24" x2="54" y2="24" stroke="url(#bm-line)" stroke-width="1" opacity="0.6" />
+        </svg>
+        <div class="brand__text">
+          <div class="brand__title">Plan Lekcji 2.0</div>
+          <div id="dateTime" class="datetime" aria-live="polite"></div>
         </div>
       </div>
-
-      <label class="searchBar">
-        <span class="visually-hidden">Szukaj</span>
-        <input
-          id="searchInput"
-          class="searchBar__input"
-          type="search"
-          placeholder="Szukaj: przedmiot, nauczyciel, sala, klasa…"
-          autocomplete="off"
-        />
-        <button type="button" id="searchClear" class="searchBar__clear" hidden aria-label="Wyczyść">×</button>
-      </label>
-
-      <nav class="mainNav" aria-label="Sekcje">
-        <button type="button" class="mainNav__btn mainNav__btn--contact" data-panel="contact" data-i18n="nav.contact">Autor</button>
-        <button type="button" class="mainNav__btn mainNav__btn--primary mainNav__btn--active" data-panel="plan" data-i18n="nav.plan">Plan</button>
-        <button type="button" class="mainNav__btn mainNav__btn--primary" data-panel="homework" data-i18n="nav.homework">PD</button>
-        <button type="button" class="mainNav__btn mainNav__btn--bookmarks" data-panel="bookmarks" data-i18n="nav.bookmarks">★ Zakładki</button>
-        <button type="button" class="mainNav__btn" data-panel="guide" data-i18n="nav.guide">? Przewodnik</button>
-        <button type="button" class="mainNav__btn" data-panel="teachers" data-i18n="nav.teachers">Dla nauczycieli</button>
-        <button type="button" class="mainNav__btn" data-panel="subst" data-i18n="nav.subst">Zastępstwa</button>
-        <button type="button" class="mainNav__btn" data-panel="fun" data-i18n="nav.fun">Fun</button>
-      </nav>
-    </header>
-
-    <div id="welcomeOverlay" class="welcomeOverlay" hidden>
-      <div class="welcomeCard" role="dialog" aria-labelledby="welcomeTitle" aria-modal="true">
-        <div class="welcomeCard__badge" data-i18n="welcome.badge">Witaj!</div>
-        <h2 id="welcomeTitle" class="welcomeCard__title">Plan Lekcji 2.0</h2>
-        <p class="welcomeCard__text" data-i18n="welcome.text">
-          To wygodny podgląd planu lekcji GSA — kolorowe karty, wiele klas naraz, zastępstwa i więcej.
-        </p>
-        <button type="button" id="welcomeGuideBtn" class="infoCard__btn welcomeCard__btn" data-i18n="welcome.guide">
-          Zobacz przewodnik
+      <div class="topbar__actions">
+        <div id="serverStatus" class="serverStatus serverStatus--checking" title="Status serwera">
+          <span class="serverStatus__dot"></span>
+          <span class="serverStatus__label">…</span>
+        </div>
+        <button id="reloadBtn" class="btn btn--icon" type="button" aria-label="Odśwież">
+          <span class="btn__icon" aria-hidden="true">↻</span>
         </button>
-        <button type="button" id="welcomeSkipBtn" class="welcomeCard__skip" data-i18n="welcome.skip">Przejdź od razu do planu</button>
       </div>
     </div>
 
-    <main class="main">
-      <!-- PRZEWODNIK -->
-      <section id="panelGuide" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="guide.title">Przewodnik</div>
-            <div class="panel__meta" data-i18n="guide.meta">Plan Lekcji 2.0 — co to jest i jak korzystać</div>
-          </div>
+    <label class="searchBar">
+      <span class="visually-hidden">Szukaj</span>
+      <input id="searchInput" class="searchBar__input" type="search"
+        placeholder="Szukaj: przedmiot, nauczyciel, sala, klasa…" autocomplete="off" />
+      <button type="button" id="searchClear" class="searchBar__clear" hidden aria-label="Wyczyść">×</button>
+    </label>
+
+    <nav class="mainNav" aria-label="Sekcje">
+      <button type="button" class="mainNav__btn mainNav__btn--contact" data-panel="contact"
+        data-i18n="nav.contact">Autor</button>
+      <button type="button" class="mainNav__btn mainNav__btn--primary mainNav__btn--active" data-panel="plan"
+        data-i18n="nav.plan">Plan</button>
+      <button type="button" class="mainNav__btn mainNav__btn--primary" data-panel="homework"
+        data-i18n="nav.homework">PD</button>
+      <button type="button" class="mainNav__btn mainNav__btn--bookmarks" data-panel="bookmarks"
+        data-i18n="nav.bookmarks">★ Zakładki</button>
+      <button type="button" class="mainNav__btn" data-panel="guide" data-i18n="nav.guide">? Przewodnik</button>
+      <button type="button" class="mainNav__btn" data-panel="teachers" data-i18n="nav.teachers">Dla nauczycieli</button>
+      <button type="button" class="mainNav__btn" data-panel="subst" data-i18n="nav.subst">Zastępstwa</button>
+      <button type="button" class="mainNav__btn" data-panel="fun" data-i18n="nav.fun">Fun</button>
+    </nav>
+  </header>
+
+  <div id="welcomeOverlay" class="welcomeOverlay" hidden>
+    <div class="welcomeCard" role="dialog" aria-labelledby="welcomeTitle" aria-modal="true">
+      <div class="welcomeCard__badge" data-i18n="welcome.badge">Witaj!</div>
+      <h2 id="welcomeTitle" class="welcomeCard__title">Plan Lekcji 2.0</h2>
+      <p class="welcomeCard__text" data-i18n="welcome.text">
+        To wygodny podgląd planu lekcji GSA — kolorowe karty, wiele klas naraz, zastępstwa i więcej.
+      </p>
+      <button type="button" id="welcomeGuideBtn" class="infoCard__btn welcomeCard__btn" data-i18n="welcome.guide">
+        Zobacz przewodnik
+      </button>
+      <button type="button" id="welcomeSkipBtn" class="welcomeCard__skip" data-i18n="welcome.skip">Przejdź od razu do
+        planu</button>
+    </div>
+  </div>
+
+  <main class="main">
+    <!-- PRZEWODNIK -->
+    <section id="panelGuide" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="guide.title">Przewodnik</div>
+          <div class="panel__meta" data-i18n="guide.meta">Plan Lekcji 2.0 — co to jest i jak korzystać</div>
         </div>
-        <div class="guide">
-          <article class="guideBlock">
-            <h3 class="guideBlock__title" data-i18n="guide.what.title">Czym jest Plan Lekcji 2.0?</h3>
-            <p data-i18n="guide.what.text">
-              To <strong>nieoficjalna</strong>, nowoczesna strona do przeglądania planu lekcji
-              <strong>Gdańskich Szkół Autonomicznych</strong>. Dane pobierane są z publicznego EduPage szkoły
-              (<a href="https://autonomiczne.edupage.org/timetable/" target="_blank" rel="noreferrer"
-                >autonomiczne.edupage.org</a
-              >) — tak jak na oryginalnej stronie, ale w wygodniejszej formie na telefon i komputer.
-            </p>
-            <p>Autor: <strong>KM</strong> — fan przyjaznego planu, nie strona szkoły.</p>
-          </article>
+      </div>
+      <div class="guide">
+        <article class="guideBlock">
+          <h3 class="guideBlock__title" data-i18n="guide.what.title">Czym jest Plan Lekcji 2.0?</h3>
+          <p data-i18n="guide.what.text">
+            To <strong>nieoficjalna</strong>, nowoczesna strona do przeglądania planu lekcji
+            <strong>Gdańskich Szkół Autonomicznych</strong>. Dane pobierane są z publicznego EduPage szkoły
+            (<a href="https://autonomiczne.edupage.org/timetable/" target="_blank"
+              rel="noreferrer">autonomiczne.edupage.org</a>) — tak jak na oryginalnej stronie, ale w wygodniejszej
+            formie na telefon i komputer.
+          </p>
+          <p>Autor: <strong>KM</strong> — fan przyjaznego planu, nie strona szkoły.</p>
+        </article>
 
-          <article class="guideBlock">
-            <h3 class="guideBlock__title" data-i18n="guide.run.title">Jak uruchomić (Mac / komputer)</h3>
-            <ol class="guideList">
-              <li data-i18n="guide.run.step1">Otwórz terminal w folderze projektu.</li>
-              <li>Wpisz: <code class="guideCode">python3 server.py</code></li>
-              <li>W przeglądarce: <code class="guideCode">http://localhost:5173</code></li>
-            </ol>
-            <p class="guideNote">
-              <strong data-i18n="guide.run.phone">Telefon:</strong> ten sam Wi‑Fi co komputer → w Chrome wpisz
-              <code class="guideCode">http://ADRES_IP_MACA:5173</code> (np. 192.168.1.23). Serwer musi działać na
-              komputerze.
-            </p>
-          </article>
+        <article class="guideBlock">
+          <h3 class="guideBlock__title" data-i18n="guide.run.title">Jak uruchomić (Mac / komputer)</h3>
+          <ol class="guideList">
+            <li data-i18n="guide.run.step1">Otwórz terminal w folderze projektu.</li>
+            <li>Wpisz: <code class="guideCode">python3 server.py</code></li>
+            <li>W przeglądarce: <code class="guideCode">http://localhost:5173</code></li>
+          </ol>
+          <p class="guideNote">
+            <strong data-i18n="guide.run.phone">Telefon:</strong> ten sam Wi‑Fi co komputer → w Chrome wpisz
+            <code class="guideCode">http://ADRES_IP_MACA:5173</code> (np. 192.168.1.23). Serwer musi działać na
+            komputerze.
+          </p>
+        </article>
 
-          <article class="guideBlock">
-            <h3 class="guideBlock__title" data-i18n="guide.tabs.title">Zakładki u góry</h3>
-            <ul class="guideList">
-              <li><strong>Plan</strong> — <span data-i18n="guide.tabs.plan">klasy, dzień lub tydzień, wyszukiwarka</span></li>
-              <li><strong>PD</strong> — <span data-i18n="guide.tabs.pd">prace domowe (klasa 5A, WhatsApp, Gmail)</span></li>
-              <li><strong data-i18n="nav.contact">Autor</strong> — <span data-i18n="guide.tabs.contact">kontakt szkoły i twórcy</span></li>
-              <li><strong data-i18n="nav.more">Więcej</strong> → <span data-i18n="guide.tabs.more">przewodnik, nauczyciele, zastępstwa, fun, zakładki</span></li>
-            </ul>
-          </article>
+        <article class="guideBlock">
+          <h3 class="guideBlock__title" data-i18n="guide.tabs.title">Zakładki u góry</h3>
+          <ul class="guideList">
+            <li><strong>Plan</strong> — <span data-i18n="guide.tabs.plan">klasy, dzień lub tydzień, wyszukiwarka</span>
+            </li>
+            <li><strong>PD</strong> — <span data-i18n="guide.tabs.pd">prace domowe (klasa 5A, WhatsApp, Gmail)</span>
+            </li>
+            <li><strong data-i18n="nav.contact">Autor</strong> — <span data-i18n="guide.tabs.contact">kontakt szkoły i
+                twórcy</span></li>
+            <li><strong data-i18n="nav.more">Więcej</strong> → <span data-i18n="guide.tabs.more">przewodnik,
+                nauczyciele, zastępstwa, fun, zakładki</span></li>
+          </ul>
+        </article>
 
-          <article class="guideBlock">
-            <h3 class="guideBlock__title" data-i18n="guide.basics.title">Plan lekcji — podstawy</h3>
-            <ul class="guideList">
-              <li data-i18n="guide.basics.1">Dotknij <strong>klas</strong>, aby włączyć lub wyłączyć — możesz kilka naraz.</li>
-              <li data-i18n="guide.basics.2"><strong>Dzień</strong> — dowolny dzień tygodnia; <strong>Tydzień</strong> — cały Pon–Pt, swipe w lewo/prawo.</li>
-              <li data-i18n="guide.basics.3">Lekcja z etykietą <strong>TERAZ</strong> — trwa w tej chwili (tylko „dziś").</li>
-              <li data-i18n="guide.basics.4"><strong>Szukaj</strong> u góry — filtruje przedmiot, nauczyciela, salę, klasę.</li>
-              <li data-i18n="guide.basics.5">Kolorowe karty — każdy przedmiot ma swój styl (np. muzyka 💀).</li>
-            </ul>
-          </article>
+        <article class="guideBlock">
+          <h3 class="guideBlock__title" data-i18n="guide.basics.title">Plan lekcji — podstawy</h3>
+          <ul class="guideList">
+            <li data-i18n="guide.basics.1">Dotknij <strong>klas</strong>, aby włączyć lub wyłączyć — możesz kilka naraz.
+            </li>
+            <li data-i18n="guide.basics.2"><strong>Dzień</strong> — dowolny dzień tygodnia; <strong>Tydzień</strong> —
+              cały Pon–Pt, swipe w lewo/prawo.</li>
+            <li data-i18n="guide.basics.3">Lekcja z etykietą <strong>TERAZ</strong> — trwa w tej chwili (tylko „dziś").
+            </li>
+            <li data-i18n="guide.basics.4"><strong>Szukaj</strong> u góry — filtruje przedmiot, nauczyciela, salę,
+              klasę.</li>
+            <li data-i18n="guide.basics.5">Kolorowe karty — każdy przedmiot ma swój styl (np. muzyka 💀).</li>
+          </ul>
+        </article>
 
-          <article class="guideBlock">
-            <h3 class="guideBlock__title" data-i18n="guide.tips.title">Wskazówki</h3>
-            <ul class="guideList">
-              <li data-i18n="guide.tips.1">Przycisk <strong>↻</strong> odświeża dane z EduPage.</li>
-              <li data-i18n="guide.tips.2">Jeśli coś nie działa — sprawdź, czy działa <code class="guideCode">python3 server.py</code>.</li>
-              <li data-i18n="guide.tips.3">Nie otwieraj pliku <code class="guideCode">index.html</code> z dysku — potrzebny jest serwer.</li>
-            </ul>
-          </article>
+        <article class="guideBlock">
+          <h3 class="guideBlock__title" data-i18n="guide.tips.title">Wskazówki</h3>
+          <ul class="guideList">
+            <li data-i18n="guide.tips.1">Przycisk <strong>↻</strong> odświeża dane z EduPage.</li>
+            <li data-i18n="guide.tips.2">Jeśli coś nie działa — sprawdź, czy działa <code
+                class="guideCode">python3 server.py</code>.</li>
+            <li data-i18n="guide.tips.3">Nie otwieraj pliku <code class="guideCode">index.html</code> z dysku —
+              potrzebny jest serwer.</li>
+          </ul>
+        </article>
 
-          <button type="button" id="guideToPlanBtn" class="infoCard__btn" data-i18n="guide.goplan">Przejdź do planu lekcji</button>
+        <button type="button" id="guideToPlanBtn" class="infoCard__btn" data-i18n="guide.goplan">Przejdź do planu
+          lekcji</button>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section id="panelPlan" class="panel panelView">
+      <div class="panel__header">
+        <div class="panel__info">
+          <div id="schoolName" class="panel__title">Ładowanie…</div>
+          <div id="metaLine" class="panel__meta"></div>
         </div>
-      </section>
+        <div id="statusPill" class="pill pill--loading" data-i18n="status.loading">Ładowanie</div>
+      </div>
 
-      <!-- PLAN -->
-      <section id="panelPlan" class="panel panelView">
-        <div class="panel__header">
-          <div class="panel__info">
-            <div id="schoolName" class="panel__title">Ładowanie…</div>
-            <div id="metaLine" class="panel__meta"></div>
-          </div>
-          <div id="statusPill" class="pill pill--loading" data-i18n="status.loading">Ładowanie</div>
-        </div>
-
-        <div class="panelControls">
-          <div class="classBar" id="classBar">
-            <div class="classBar__head">
-              <span class="control__label" data-i18n="label.classes">Klasy</span>
-              <div class="classBar__actions">
-                <button type="button" id="selectAllBtn" class="linkBtn" disabled data-i18n="btn.all">Wszystkie</button>
-                <button type="button" id="clearAllBtn" class="linkBtn" disabled data-i18n="btn.clear">Wyczyść</button>
-              </div>
+      <div class="panelControls">
+        <div class="classBar" id="classBar">
+          <div class="classBar__head">
+            <span class="control__label" data-i18n="label.classes">Klasy</span>
+            <div class="classBar__actions">
+              <button type="button" id="selectAllBtn" class="linkBtn" disabled data-i18n="btn.all">Wszystkie</button>
+              <button type="button" id="clearAllBtn" class="linkBtn" disabled data-i18n="btn.clear">Wyczyść</button>
             </div>
-            <div id="classPicker" class="classPicker classPicker--swipe" role="group" aria-label="Klasy"></div>
           </div>
-
-          <div class="rowControls">
-            <div class="seg seg--3" role="tablist" aria-label="Widok planu">
-              <button type="button" class="seg__btn seg__btn--active" data-view="today" data-i18n="view.day">Dzień</button>
-              <button type="button" class="seg__btn" data-view="week" data-i18n="view.week">Tydzień</button>
-            </div>
-            <label class="control control--day" id="dayPickWrap">
-              <span class="control__label" data-i18n="label.day">Dzień</span>
-              <select id="daySelect" class="control__input"></select>
-            </label>
-          </div>
-
-          <details class="moreOpts">
-            <summary data-i18n="label.weekAB">Tydzień A / B</summary>
-            <select id="weekSelect" class="control__input">
-              <option value="all" selected data-i18n="week.all">Wszystkie</option>
-              <option value="1" data-i18n="week.a">Tydzień A</option>
-              <option value="2" data-i18n="week.b">Tydzień B</option>
-            </select>
-          </details>
+          <div id="classPicker" class="classPicker classPicker--swipe" role="group" aria-label="Klasy"></div>
         </div>
 
-        <div id="errorBox" class="error" hidden></div>
-        <div id="schedule" class="schedule" role="region" aria-label="Plan lekcji"></div>
-      </section>
-
-      <!-- NAUCZYCIELE -->
-      <section id="panelTeachers" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="teachers.title">Dla nauczycieli</div>
-            <div class="panel__meta" data-i18n="teachers.meta">Jak na stronie EduPage — wybierz nauczyciela</div>
+        <div class="rowControls">
+          <div class="seg seg--3" role="tablist" aria-label="Widok planu">
+            <button type="button" class="seg__btn seg__btn--active" data-view="today"
+              data-i18n="view.day">Dzień</button>
+            <button type="button" class="seg__btn" data-view="week" data-i18n="view.week">Tydzień</button>
           </div>
-        </div>
-        <div class="panelControls">
-          <div class="classBar">
-            <div class="classBar__head">
-              <span class="control__label" data-i18n="label.teachers">Nauczyciele</span>
-              <div class="classBar__actions">
-                <button type="button" id="selectAllTeachersBtn" class="linkBtn" disabled data-i18n="btn.all">Wszystkie</button>
-                <button type="button" id="clearAllTeachersBtn" class="linkBtn" disabled data-i18n="btn.clear">Wyczyść</button>
-              </div>
-            </div>
-            <div id="teacherPicker" class="classPicker classPicker--swipe" role="group" aria-label="Nauczyciele"></div>
-          </div>
-          <label class="control control--day">
+          <label class="control control--day" id="dayPickWrap">
             <span class="control__label" data-i18n="label.day">Dzień</span>
-            <select id="teacherDaySelect" class="control__input"></select>
+            <select id="daySelect" class="control__input"></select>
           </label>
         </div>
-        <div id="teacherSchedule" class="schedule" role="region" aria-label="Plan nauczyciela"></div>
-      </section>
 
-      <!-- ZASTĘPSTWA -->
-      <section id="panelSubst" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="subst.title">Zastępstwa</div>
-            <div class="panel__meta" data-i18n="subst.meta">Dane ze strony szkoły (EduPage)</div>
+        <details class="moreOpts">
+          <summary data-i18n="label.weekAB">Tydzień A / B</summary>
+          <select id="weekSelect" class="control__input">
+            <option value="all" selected data-i18n="week.all">Wszystkie</option>
+            <option value="1" data-i18n="week.a">Tydzień A</option>
+            <option value="2" data-i18n="week.b">Tydzień B</option>
+          </select>
+        </details>
+      </div>
+
+      <div id="errorBox" class="error" hidden></div>
+      <div id="schedule" class="schedule" role="region" aria-label="Plan lekcji"></div>
+    </section>
+
+    <!-- NAUCZYCIELE -->
+    <section id="panelTeachers" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="teachers.title">Dla nauczycieli</div>
+          <div class="panel__meta" data-i18n="teachers.meta">Jak na stronie EduPage — wybierz nauczyciela</div>
+        </div>
+      </div>
+      <div class="panelControls">
+        <div class="classBar">
+          <div class="classBar__head">
+            <span class="control__label" data-i18n="label.teachers">Nauczyciele</span>
+            <div class="classBar__actions">
+              <button type="button" id="selectAllTeachersBtn" class="linkBtn" disabled
+                data-i18n="btn.all">Wszystkie</button>
+              <button type="button" id="clearAllTeachersBtn" class="linkBtn" disabled
+                data-i18n="btn.clear">Wyczyść</button>
+            </div>
+          </div>
+          <div id="teacherPicker" class="classPicker classPicker--swipe" role="group" aria-label="Nauczyciele"></div>
+        </div>
+        <label class="control control--day">
+          <span class="control__label" data-i18n="label.day">Dzień</span>
+          <select id="teacherDaySelect" class="control__input"></select>
+        </label>
+      </div>
+      <div id="teacherSchedule" class="schedule" role="region" aria-label="Plan nauczyciela"></div>
+    </section>
+
+    <!-- ZASTĘPSTWA -->
+    <section id="panelSubst" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="subst.title">Zastępstwa</div>
+          <div class="panel__meta" data-i18n="subst.meta">Dane ze strony szkoły (EduPage)</div>
+        </div>
+      </div>
+      <div class="panelControls">
+        <label class="control control--block">
+          <span class="control__label" data-i18n="label.date">Data</span>
+          <input id="substDate" class="control__input" type="date" />
+        </label>
+      </div>
+      <div id="substContent" class="substEmbed">
+        <div class="scheduleEmpty" data-i18n="subst.loading">Ładowanie zastępstw…</div>
+      </div>
+    </section>
+
+    <!-- PRACE DOMOWE -->
+    <section id="panelHomework" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="hw.title">Prace domowe</div>
+          <div class="panel__meta" data-i18n="hw.meta">Na razie tylko klasa 5A</div>
+        </div>
+      </div>
+      <div class="infoStack">
+        <div class="infoCard infoCard--class">
+          <h3 class="infoCard__title">Klasa 5A</h3>
+
+          <div class="infoCard__block">
+            <h4 class="infoCard__subtitle" data-i18n="hw.wa.title">Grupa WhatsApp — nieobecni z lekcji</h4>
+            <p class="infoCard__text" data-i18n="hw.wa.text">
+              Otworzy się Gmail z gotową wiadomością do twórcy — uzupełnij tylko imię i nazwisko (klasa 5A
+              jest już wpisana).
+            </p>
+            <button type="button" id="homeworkEmailBtn" class="infoCard__btn" data-i18n="hw.wa.btn">
+              Wyślij prośbę w Gmail
+            </button>
+          </div>
+
+          <div class="infoCard__block">
+            <h4 class="infoCard__subtitle" data-i18n="hw.arch.title">Archiwum prac domowych (nieobecni)</h4>
+            <p class="infoCard__text" data-i18n="hw.arch.text">
+              Kanał WhatsApp z pracami domowymi na dziś i archiwum dla osób nieobecnych:
+            </p>
+            <a class="infoCard__btn infoCard__btn--wa" href="https://whatsapp.com/channel/0029VbDM0piKAwEi780bXw0s"
+              target="_blank" rel="noreferrer" data-i18n="hw.arch.btn">Praca Domowa Na Dziś! — WhatsApp</a>
           </div>
         </div>
-        <div class="panelControls">
-          <label class="control control--block">
-            <span class="control__label" data-i18n="label.date">Data</span>
-            <input id="substDate" class="control__input" type="date" />
-          </label>
-        </div>
-        <div id="substContent" class="substEmbed">
-          <div class="scheduleEmpty" data-i18n="subst.loading">Ładowanie zastępstw…</div>
-        </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- PRACE DOMOWE -->
-      <section id="panelHomework" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="hw.title">Prace domowe</div>
-            <div class="panel__meta" data-i18n="hw.meta">Na razie tylko klasa 5A</div>
-          </div>
+    <!-- FUN -->
+    <section id="panelFun" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="fun.title">Fun</div>
+          <div class="panel__meta" data-i18n="fun.meta">Kanały i linki od twórcy</div>
         </div>
-        <div class="infoStack">
-          <div class="infoCard infoCard--class">
-            <h3 class="infoCard__title">Klasa 5A</h3>
-
-            <div class="infoCard__block">
-              <h4 class="infoCard__subtitle" data-i18n="hw.wa.title">Grupa WhatsApp — nieobecni z lekcji</h4>
-              <p class="infoCard__text" data-i18n="hw.wa.text">
-                Otworzy się Gmail z gotową wiadomością do twórcy — uzupełnij tylko imię i nazwisko (klasa 5A
-                jest już wpisana).
+      </div>
+      <div class="infoStack">
+        <!-- Horizontal swipe row for chat/channel options -->
+        <div class="chatSwipeRow" id="chatSwipeRow">
+          <div class="chatSwipeRow__track" id="chatSwipeTrack">
+            <div class="infoCard chatSwipeCard">
+              <h3 class="infoCard__title">🆓 FREE Clash + Brawl Gifts 🎁</h3>
+              <p class="infoCard__text" data-i18n="fun.clash.text">
+                Kanał WhatsApp z darmowymi prezentami do Clash Royale i Brawl Stars.
               </p>
-              <button type="button" id="homeworkEmailBtn" class="infoCard__btn" data-i18n="hw.wa.btn">
-                Wyślij prośbę w Gmail
-              </button>
+              <a class="infoCard__btn infoCard__btn--wa" href="https://whatsapp.com/channel/0029VbCTlxO23n3e7LA1323Z"
+                target="_blank" rel="noreferrer" data-i18n="fun.clash.btn">Otwórz kanał WhatsApp</a>
             </div>
-
-            <div class="infoCard__block">
-              <h4 class="infoCard__subtitle" data-i18n="hw.arch.title">Archiwum prac domowych (nieobecni)</h4>
-              <p class="infoCard__text" data-i18n="hw.arch.text">
-                Kanał WhatsApp z pracami domowymi na dziś i archiwum dla osób nieobecnych:
+            <div class="infoCard chatSwipeCard">
+              <h3 class="infoCard__title">🎮 Scratch</h3>
+              <p class="infoCard__text" data-i18n="fun.scratch.text">
+                Projekty twórcy na Scratch — gry i animacje.
               </p>
-              <a
-                class="infoCard__btn infoCard__btn--wa"
-                href="https://whatsapp.com/channel/0029VbDM0piKAwEi780bXw0s"
-                target="_blank"
-                rel="noreferrer"
-                data-i18n="hw.arch.btn"
-                >Praca Domowa Na Dziś! — WhatsApp</a
-              >
+              <a class="infoCard__btn" href="https://scratch.mit.edu/users/REAL-FLIER637/" target="_blank"
+                rel="noreferrer" data-i18n="fun.scratch.btn">Otwórz Scratch</a>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- FUN -->
-      <section id="panelFun" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="fun.title">Fun</div>
-            <div class="panel__meta" data-i18n="fun.meta">Kanały i linki od twórcy</div>
+          <div class="infoCard chatSwipeCard">
+            <h3 class="infoCard__title">🎮 itch.io</h3>
+            <p class="infoCard__text">Gry twórcy na itch.io.</p>
+            <a class="infoCard__btn" href="https://troy-en-games.itch.io/" target="_blank" rel="noreferrer">Otwórz
+              itch.io</a>
+          </div>
+          <div class="infoCard chatSwipeCard">
+            <h3 class="infoCard__title">🚀 MetaSpace</h3>
+            <p class="infoCard__text">Projekt twórcy — MetaSpace.</p>
+            <a class="infoCard__btn" href="https://kostyamikh.github.io/MetaSpace/" target="_blank"
+              rel="noreferrer">Otwórz MetaSpace</a>
           </div>
         </div>
-        <div class="infoStack">
-          <!-- Horizontal swipe row for chat/channel options -->
-          <div class="chatSwipeRow" id="chatSwipeRow">
-            <div class="chatSwipeRow__track" id="chatSwipeTrack">
-              <div class="infoCard chatSwipeCard">
-                <h3 class="infoCard__title">🆓 FREE Clash + Brawl Gifts 🎁</h3>
-                <p class="infoCard__text" data-i18n="fun.clash.text">
-                  Kanał WhatsApp z darmowymi prezentami do Clash Royale i Brawl Stars.
-                </p>
-                <a
-                  class="infoCard__btn infoCard__btn--wa"
-                  href="https://whatsapp.com/channel/0029VbCTlxO23n3e7LA1323Z"
-                  target="_blank"
-                  rel="noreferrer"
-                  data-i18n="fun.clash.btn"
-                  >Otwórz kanał WhatsApp</a
-                >
-              </div>
-              <div class="infoCard chatSwipeCard">
-                <h3 class="infoCard__title">🎮 Scratch</h3>
-                <p class="infoCard__text" data-i18n="fun.scratch.text">
-                  Projekty twórcy na Scratch — gry i animacje.
-                </p>
-                <a
-                  class="infoCard__btn"
-                  href="https://scratch.mit.edu/users/REAL-FLIER637/"
-                  target="_blank"
-                  rel="noreferrer"
-                  data-i18n="fun.scratch.btn"
-                  >Otwórz Scratch</a
-                >
-              </div>
-            </div>
-              <div class="infoCard chatSwipeCard">
-                <h3 class="infoCard__title">🎮 itch.io</h3>
-                <p class="infoCard__text">Gry twórcy na itch.io.</p>
-                <a
-                  class="infoCard__btn"
-                  href="https://troy-en-games.itch.io/"
-                  target="_blank"
-                  rel="noreferrer"
-                  >Otwórz itch.io</a
-                >
-              </div>
-              <div class="infoCard chatSwipeCard">
-                <h3 class="infoCard__title">🚀 MetaSpace</h3>
-                <p class="infoCard__text">Projekt twórcy — MetaSpace.</p>
-                <a
-                  class="infoCard__btn"
-                  href="https://kostyamikh.github.io/MetaSpace/"
-                  target="_blank"
-                  rel="noreferrer"
-                  >Otwórz MetaSpace</a
-                >
-              </div>
-            </div>
-            <div class="chatSwipeRow__dots" id="chatSwipeDots">
-              <span class="chatSwipeDot chatSwipeDot--active"></span>
-              <span class="chatSwipeDot"></span>
-              <span class="chatSwipeDot"></span>
-              <span class="chatSwipeDot"></span>
-            </div>
-          </div>
+        <div class="chatSwipeRow__dots" id="chatSwipeDots">
+          <span class="chatSwipeDot chatSwipeDot--active"></span>
+          <span class="chatSwipeDot"></span>
+          <span class="chatSwipeDot"></span>
+          <span class="chatSwipeDot"></span>
         </div>
-      </section>
+      </div>
+      </div>
+    </section>
 
-      <!-- ZAKŁADKI -->
-      <section id="panelBookmarks" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="bm.title">Zakładki</div>
-            <div class="panel__meta" data-i18n="bm.meta">Dotknij ★ przy klasie lub nauczycielu, aby dodać</div>
-          </div>
+    <!-- ZAKŁADKI -->
+    <section id="panelBookmarks" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="bm.title">Zakładki</div>
+          <div class="panel__meta" data-i18n="bm.meta">Dotknij ★ przy klasie lub nauczycielu, aby dodać</div>
         </div>
-        <div id="bookmarksList" class="bookmarksList"></div>
-      </section>
+      </div>
+      <div id="bookmarksList" class="bookmarksList"></div>
+    </section>
 
-      <!-- KONTAKT / AUTOR -->
-      <section id="panelContact" class="panel panelView" hidden>
-        <div class="panel__header">
-          <div class="panel__info">
-            <div class="panel__title" data-i18n="contact.title">Kontakt</div>
-          </div>
+    <!-- KONTAKT / AUTOR -->
+    <section id="panelContact" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title" data-i18n="contact.title">Kontakt</div>
         </div>
-        <div class="contactCard">
-          <h3 class="contactCard__heading" data-i18n="contact.school">Szkoła</h3>
-          <p class="contactCard__name">Gdańskie Szkoły Autonomiczne</p>
-          <ul class="contactList">
-            <li>
-              <span class="contactList__label" data-i18n="contact.address">Adres</span>
-              <span>ul. Osiek 11/12, 80-842 Gdańsk, Polska</span>
-            </li>
-            <li>
-              <span class="contactList__label" data-i18n="contact.phone">Telefon</span>
-              <a href="tel:+48583014951">058-301-49-51</a>
-            </li>
-            <li>
-              <span class="contactList__label">E-mail</span>
-              <a href="mailto:gsa@gfo.pl">gsa@gfo.pl</a>
-            </li>
-            <li>
-              <span class="contactList__label" data-i18n="contact.site">Strona</span>
-              <a href="https://autonomiczne.edupage.org/" target="_blank" rel="noreferrer"
-                >autonomiczne.edupage.org</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="contactCard">
-          <h3 class="contactCard__heading" data-i18n="contact.creator">Twórca aplikacji</h3>
-          <ul class="contactList">
-            <li>
-              <span class="contactList__label" data-i18n="contact.author">Autor</span>
-              <span>KM</span>
-            </li>
-            <li>
-              <span class="contactList__label">E-mail</span>
-              <a href="mailto:independent.k.d.mikhailov@gmail.com">independent.k.d.mikhailov@gmail.com</a>
-            </li>
-            <li>
-              <span class="contactList__label">GitHub</span>
-              <a href="https://github.com/KostyaMikh/Plan-Lekcji-2.0" target="_blank" rel="noreferrer"
-                >KostyaMikh/Plan-Lekcji-2.0</a
-              >
-            </li>
-            <li>
-              <span class="contactList__label">Scratch</span>
-              <a href="https://scratch.mit.edu/users/REAL-FLIER637/" target="_blank" rel="noreferrer"
-                >REAL-FLIER637</a
-              >
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
+      <div class="contactCard">
+        <h3 class="contactCard__heading" data-i18n="contact.school">Szkoła</h3>
+        <p class="contactCard__name">Gdańskie Szkoły Autonomiczne</p>
+        <ul class="contactList">
+          <li>
+            <span class="contactList__label" data-i18n="contact.address">Adres</span>
+            <span>ul. Osiek 11/12, 80-842 Gdańsk, Polska</span>
+          </li>
+          <li>
+            <span class="contactList__label" data-i18n="contact.phone">Telefon</span>
+            <a href="tel:+48583014951">058-301-49-51</a>
+          </li>
+          <li>
+            <span class="contactList__label">E-mail</span>
+            <a href="mailto:gsa@gfo.pl">gsa@gfo.pl</a>
+          </li>
+          <li>
+            <span class="contactList__label" data-i18n="contact.site">Strona</span>
+            <a href="https://autonomiczne.edupage.org/" target="_blank" rel="noreferrer">autonomiczne.edupage.org</a>
+          </li>
+        </ul>
+      </div>
+      <div class="contactCard">
+        <h3 class="contactCard__heading" data-i18n="contact.creator">Twórca aplikacji</h3>
+        <ul class="contactList">
+          <li>
+            <span class="contactList__label" data-i18n="contact.author">Autor</span>
+            <span>KM</span>
+          </li>
+          <li>
+            <span class="contactList__label">E-mail</span>
+            <a href="mailto:independent.k.d.mikhailov@gmail.com">independent.k.d.mikhailov@gmail.com</a>
+          </li>
+          <li>
+            <span class="contactList__label">GitHub</span>
+            <a href="https://github.com/KostyaMikh/Plan-Lekcji-2.0" target="_blank"
+              rel="noreferrer">KostyaMikh/Plan-Lekcji-2.0</a>
+          </li>
+          <li>
+            <span class="contactList__label">Scratch</span>
+            <a href="https://scratch.mit.edu/users/REAL-FLIER637/" target="_blank" rel="noreferrer">REAL-FLIER637</a>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-      <footer class="footer">
-        <a href="https://autonomiczne.edupage.org/timetable/" target="_blank" rel="noreferrer"
-          data-i18n="footer.source">Źródło: EduPage GSA</a
-        >
-      </footer>
-    </main>
+    <footer class="footer">
+      <a href="https://autonomiczne.edupage.org/timetable/" target="_blank" rel="noreferrer"
+        data-i18n="footer.source">Źródło: EduPage GSA</a>
+    </footer>
+  </main>
 
-    <script src="./app.js" type="module"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
-      }
-    </script>
-  </body>
+  <script src="./app.js" type="module"></script>
+</body>
+
 </html>
