@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#060713" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./favicon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+  <title>Plan Lekcji 2.0 — GSA</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar__row">
+      <div class="brand">
+        <svg class="brand__mark" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bm-bg1" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#1a1d3a" />
+              <stop offset="100%" stop-color="#060713" />
+            </radialGradient>
+            <radialGradient id="bm-glow1" cx="30%" cy="30%" r="60%">
+              <stop offset="0%" stop-color="#66f0ff" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#66f0ff" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="bm-glow2" cx="70%" cy="70%" r="60%">
+              <stop offset="0%" stop-color="#b26cff" stop-opacity="0.22" />
+              <stop offset="100%" stop-color="#b26cff" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="bm-line" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#66f0ff" />
+              <stop offset="100%" stop-color="#b26cff" />
+            </linearGradient>
+            <linearGradient id="bm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#66f0ff" />
+              <stop offset="100%" stop-color="#b26cff" />
+            </linearGradient>
+            <filter id="bm-glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="1.5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-bg1)" />
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow1)" />
+          <rect width="64" height="64" rx="14" ry="14" fill="url(#bm-glow2)" />
+          <g opacity="0.12">
+            <line x1="0" y1="16" x2="64" y2="16" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="0" y1="32" x2="64" y2="32" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="0" y1="48" x2="64" y2="48" stroke="#66f0ff" stroke-width="0.5" />
+            <line x1="16" y1="0" x2="16" y2="64" stroke="#b26cff" stroke-width="0.5" />
+            <line x1="32" y1="0" x2="32" y2="64" stroke="#b26cff" stroke-width="0.5" />
+            <line x1="48" y1="0" x2="48" y2="64" stroke="#b26cff" stroke-width="0.5" />
+          </g>
+          <rect x="10" y="13" width="44" height="38" rx="5" ry="5" fill="none" stroke="url(#bm-line)" stroke-width="2"
+            filter="url(#bm-glow)" />
+          <rect x="10" y="13" width="44" height="11" rx="5" ry="5" fill="url(#bm-grad)" opacity="0.18" />
+          <rect x="10" y="19" width="44" height="5" fill="url(#bm-grad)" opacity="0.18" />
+          <line x1="22" y1="10" x2="22" y2="17" stroke="#66f0ff" stroke-width="2.5" stroke-linecap="round"
+            filter="url(#bm-glow)" />
+          <line x1="42" y1="10" x2="42" y2="17" stroke="#b26cff" stroke-width="2.5" stroke-linecap="round"
+            filter="url(#bm-glow)" />
+          <rect x="14" y="28" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.75" />
+          <rect x="27" y="28" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.6" />
+          <rect x="40" y="28" width="10" height="6" rx="1.5" fill="#4dffb7" opacity="0.55" />
+          <rect x="14" y="37" width="9" height="6" rx="1.5" fill="#b26cff" opacity="0.5" />
+          <rect x="27" y="37" width="9" height="6" rx="1.5" fill="#66f0ff" opacity="0.7" />
+          <rect x="40" y="37" width="10" height="6" rx="1.5" fill="#ffcf5a" opacity="0.55" />
+          <rect x="13" y="27" width="11" height="8" rx="2" fill="none" stroke="#66f0ff" stroke-width="1" opacity="0.9"
+            filter="url(#bm-glow)" />
+          <line x1="10" y1="24" x2="54" y2="24" stroke="url(#bm-line)" stroke-width="1" opacity="0.6" />
+        </svg>
+        <div class="brand__text">
+          <div class="brand__title">Plan Lekcji 2.0</div>
+          <div id="dateTime" class="datetime" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <div id="serverStatus" class="serverStatus serverStatus--checking" title="Status serwera">
+          <span class="serverStatus__dot"></span>
+          <span class="serverStatus__label">…</span>
+        </div>
+        <button id="reloadBtn" class="btn btn--icon" type="button" aria-label="Odśwież">
+          <span class="btn__icon" aria-hidden="true">↻</span>
+        </button>
+      </div>
+    </div>
+
+    <label class="searchBar">
+      <span class="visually-hidden">Szukaj</span>
+      <input id="searchInput" class="searchBar__input" type="search"
+        placeholder="Szukaj: przedmiot, nauczyciel, sala, klasa…" autocomplete="off" />
+      <button type="button" id="searchClear" class="searchBar__clear" hidden aria-label="Wyczyść">×</button>
+    </label>
+
+    <nav class="mainNav" aria-label="Sekcje">
+      <button type="button" class="mainNav__btn mainNav__btn--primary mainNav__btn--active"
+        data-panel="plan">Plan</button>
+      <button type="button" class="mainNav__btn mainNav__btn--contact" data-panel="contact">Autor</button>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- PLAN -->
+    <section id="panelPlan" class="panel panelView">
+      <div class="panel__header">
+        <div class="panel__info">
+          <div id="schoolName" class="panel__title">Ładowanie…</div>
+          <div id="metaLine" class="panel__meta"></div>
+        </div>
+        <div id="statusPill" class="pill pill--loading">Ładowanie</div>
+      </div>
+
+      <div class="panelControls">
+        <div class="classBar" id="classBar">
+          <div class="classBar__head">
+            <span class="control__label">Klasy</span>
+            <div class="classBar__actions">
+              <button type="button" id="selectAllBtn" class="linkBtn" disabled>Wszystkie</button>
+              <button type="button" id="clearAllBtn" class="linkBtn" disabled>Wyczyść</button>
+            </div>
+          </div>
+          <div id="classPicker" class="classPicker classPicker--swipe" role="group" aria-label="Klasy"></div>
+        </div>
+
+        <div class="rowControls">
+          <div class="seg seg--3" role="tablist" aria-label="Widok planu">
+            <button type="button" class="seg__btn seg__btn--active" data-view="today">Dzień</button>
+            <button type="button" class="seg__btn" data-view="week">Tydzień</button>
+          </div>
+          <label class="control control--day" id="dayPickWrap">
+            <span class="control__label">Dzień</span>
+            <select id="daySelect" class="control__input"></select>
+          </label>
+        </div>
+
+        <details class="moreOpts">
+          <summary>Tydzień A / B</summary>
+          <select id="weekSelect" class="control__input">
+            <option value="all" selected>Wszystkie</option>
+            <option value="1">Tydzień A</option>
+            <option value="2">Tydzień B</option>
+          </select>
+        </details>
+      </div>
+
+      <div id="errorBox" class="error" hidden></div>
+      <div id="schedule" class="schedule" role="region" aria-label="Plan lekcji"></div>
+    </section>
+
+    <!-- KONTAKT / AUTOR -->
+    <section id="panelContact" class="panel panelView" hidden>
+      <div class="panel__header">
+        <div class="panel__info">
+          <div class="panel__title">Kontakt</div>
+        </div>
+      </div>
+      <div class="contactCard">
+        <h3 class="contactCard__heading">Szkoła</h3>
+        <p class="contactCard__name">Gdańskie Szkoły Autonomiczne</p>
+        <ul class="contactList">
+          <li>
+            <span class="contactList__label">Adres</span>
+            <span>ul. Osiek 11/12, 80-842 Gdańsk, Polska</span>
+          </li>
+          <li>
+            <span class="contactList__label">Telefon</span>
+            <a href="tel:+48583014951">058-301-49-51</a>
+          </li>
+          <li>
+            <span class="contactList__label">E-mail</span>
+            <a href="mailto:gsa@gfo.pl">gsa@gfo.pl</a>
+          </li>
+          <li>
+            <span class="contactList__label">Strona</span>
+            <a href="https://autonomiczne.edupage.org/" target="_blank" rel="noreferrer">autonomiczne.edupage.org</a>
+          </li>
+        </ul>
+      </div>
+      <div class="contactCard">
+        <h3 class="contactCard__heading">Twórca aplikacji</h3>
+        <ul class="contactList">
+          <li>
+            <span class="contactList__label">Autor</span>
+            <span>KM</span>
+          </li>
+          <li>
+            <span class="contactList__label">E-mail</span>
+            <a href="mailto:independent.k.d.mikhailov@gmail.com">independent.k.d.mikhailov@gmail.com</a>
+          </li>
+          <li>
+            <span class="contactList__label">GitHub</span>
+            <a href="https://github.com/KostyaMikh/Plan-Lekcji-2.0" target="_blank"
+              rel="noreferrer">KostyaMikh/Plan-Lekcji-2.0</a>
+          </li>
+          <li>
+            <span class="contactList__label">Scratch</span>
+            <a href="https://scratch.mit.edu/users/REAL-FLIER637/" target="_blank" rel="noreferrer">REAL-FLIER637</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a href="https://autonomiczne.edupage.org/timetable/" target="_blank" rel="noreferrer">Źródło: EduPage GSA</a>
+    </footer>
+  </main>
+
+  <script src="./app.js" type="module"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+
+</html>
